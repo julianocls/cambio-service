@@ -25,6 +25,7 @@ dependencies {
 	implementation 'mysql:mysql-connector-java'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-mysql'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

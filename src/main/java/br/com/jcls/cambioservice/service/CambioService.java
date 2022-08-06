@@ -3,7 +3,6 @@ package br.com.jcls.cambioservice.service;
 import br.com.jcls.cambioservice.model.Cambio;
 import br.com.jcls.cambioservice.repository.CambioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,6 @@ public class CambioService {
     @Autowired
     private CambioRepository cambioRepository;
 
-    @Cacheable(cacheNames = "Cambio", key="#from.#to")
     public Cambio findByFromAndTo(String from, String to, BigDecimal amount) {
 
         var cambio = cambioRepository.findByFromAndTo(from, to);

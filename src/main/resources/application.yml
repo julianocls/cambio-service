@@ -10,6 +10,18 @@ spring:
     username: root
     password: rootroot
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+        exclude: dev,beans,info
+  endpoint:
+    health:
+      enabled: true
+      status:
+        order: UP,DOWN,OUT_OF_SERVICE,UNKNOWN
+
   jpa:
     hibernate:
       ddl-auto: update

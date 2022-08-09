@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CambioRepository extends JpaRepository<Cambio, Long> {
-    @Cacheable(cacheNames = "Cambio")
+    @Cacheable(cacheNames = "cambio-expire")
     Cambio findByFromAndTo(String from, String to);
 
 }

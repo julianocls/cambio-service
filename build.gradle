@@ -32,6 +32,7 @@ dependencies {
 	implementation 'redis.clients:jedis:4.2.3'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'it.ozimov:embedded-redis:0.7.3'
 }
 
 dependencyManagement {

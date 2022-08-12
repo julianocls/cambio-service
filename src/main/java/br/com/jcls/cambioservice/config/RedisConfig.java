@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
 import java.time.Duration;
@@ -21,7 +20,7 @@ import java.util.Objects;
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Autowired
-    private CacheConfigProperties cacheConfigProperties;
+    private CacheTimeout cacheTimeout;
 
     private org.springframework.data.redis.cache.RedisCacheConfiguration createCacheConfiguration(long timeoutInMinutes) {
         return org.springframework.data.redis.cache.RedisCacheConfiguration.defaultCacheConfig()
@@ -31,22 +30,19 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Bean
     public CacheManager cacheManager(LettuceConnectionFactory redisConnectionFactory) {
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
-        if (Objects.nonNull(cacheConfigProperties.getCachesTTL())) {
-            for (Map.Entry<String, String> cacheNameAndTimeout : cacheConfigProperties.getCachesTTL().entrySet()) {
+        if (Objects.nonNull(cacheTimeout.getCachesTTL())) {
+            for (Map.Entry<String, String> cacheNameAndTimeout : cacheTimeout.getCachesTTL().entrySet()) {
                 cacheConfigurations.put(cacheNameAndTimeout.getKey(), createCacheConfiguration(Long.parseLong(cacheNameAndTimeout.getValue())));
             }
         }
         return RedisCacheManager
                 .builder(redisConnectionFactory)
-                .cacheDefaults(createCacheConfiguration(Long.parseLong(cacheConfigProperties.getDefaultTTL())))
+                .cacheDefaults(createCacheConfiguration(Long.parseLong(cacheTimeout.getDefaultTTL())))
                 .withInitialCacheConfigurations(cacheConfigurations).build();
     }
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName(cacheConfigProperties.getHost());
-        redisStandaloneConfiguration.setPort(Integer.parseInt(cacheConfigProperties.getPort()));
-        return new LettuceConnectionFactory(redisStandaloneConfiguration);
+        return new LettuceConnectionFactory();
     }
 }

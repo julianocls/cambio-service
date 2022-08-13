@@ -1,8 +1,21 @@
+buildscript {
+
+	ext {
+		set('springCloudVersion', "2021.0.3")
+	}
+
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.7.2'
 	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
 	id 'java'
+	id 'idea'
+	id 'eclipse'
+	id 'jacoco'
 }
+
+apply plugin: 'jacoco'
 
 group = 'br.com.jcls'
 version = '0.0.1-SNAPSHOT'
@@ -10,10 +23,6 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
-}
-
-ext {
-	set('springCloudVersion', "2021.0.3")
 }
 
 dependencies {
@@ -29,10 +38,15 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-mysql'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'redis.clients:jedis:4.2.3'
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.mockito:mockito-core:4.6.1'
 	testImplementation 'it.ozimov:embedded-redis:0.7.3'
+	testImplementation 'junit:junit:4.13.2'
+
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 dependencyManagement {
@@ -41,6 +55,15 @@ dependencyManagement {
 	}
 }
 
-tasks.named('test') {
+test {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+tasks.named('jar') {
+	enabled = false
+}
+
+configurations.all {
+	exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 }

@@ -22,7 +22,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Autowired
     private CacheTimeout cacheTimeout;
 
-    private org.springframework.data.redis.cache.RedisCacheConfiguration createCacheConfiguration(long timeoutInMinutes) {
+    public RedisCacheConfiguration createCacheConfiguration(long timeoutInMinutes) {
         return org.springframework.data.redis.cache.RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(timeoutInMinutes));
     }

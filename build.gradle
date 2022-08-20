@@ -39,15 +39,11 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-mysql'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'org.apache.commons:commons-lang3:3.12.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.mockito:mockito-core:4.6.1'
 	testImplementation 'it.ozimov:embedded-redis:0.7.3'
-	testImplementation 'junit:junit:4.13.2'
 
-	testCompileOnly 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
+
 }
 
 dependencyManagement {
@@ -64,7 +60,6 @@ test {
 tasks.named('jar') {
 	enabled = false
 }
-
-configurations.all {
-	exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-}
+//configurations.all {
+//	exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+//}

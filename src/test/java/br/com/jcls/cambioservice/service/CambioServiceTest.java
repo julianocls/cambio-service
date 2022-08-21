@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @EnableCaching
 @ImportAutoConfiguration(classes = {CacheAutoConfiguration.class, RedisAutoConfiguration.class})
 @ExtendWith(MockitoExtension.class)
-public class CambioServiceTest {
+class CambioServiceTest {
 
     private static final String FROM = "USD";
     private static final String TO = "BRL";
@@ -43,7 +43,7 @@ public class CambioServiceTest {
     private CambioRepository repository;
 
     @Test
-    public void shouldSaveUser_toRedis() {
+    void shouldSaveUser_toRedis() {
 
         Mockito.when(repository.findByFromAndTo(FROM, TO)).thenReturn(createCambio("EUR"));
 

@@ -2,15 +2,17 @@ package br.com.jcls.cambioservice.service;
 
 import br.com.jcls.cambioservice.model.Cambio;
 import br.com.jcls.cambioservice.repository.CambioRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+
 @Service
+@Slf4j
 public class CambioService {
 
     @Autowired
@@ -22,7 +24,7 @@ public class CambioService {
     public Cambio findByFromAndTo(String from, String to, BigDecimal amount) {
 
         var cambio = cambioRepository.findByFromAndTo(from, to);
-        System.out.printf("Consulta realizada em from: "+from+", to:"+ to);
+        log.info("Consulta realizada em from: %s, to %s", from, to);
 
         if (cambio == null ) { throw new RuntimeException("Currency unsuported"); }
 

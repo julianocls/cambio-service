@@ -26,11 +26,11 @@ public class CacheTimeoutTest {
         System.out.println("JUnit4To5.before");
     }
     @Test
-    public void shouldMigrateASimpleTest() {
+    void shouldMigrateASimpleTest() {
 
         var time = timeout.getCachesTTL();
 
-        Assertions.assertEquals("expected", "expected");
+        Assertions.assertNotNull(time);
     }
 
 }

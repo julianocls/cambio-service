@@ -17,7 +17,7 @@ class RedisConfigTest {
     private RedisConfig redisConfig;
 
     @Test
-    public void cacheConfiguration() {
+    void cacheConfiguration() {
         var redisCheConfiguration = redisConfig.createCacheConfiguration(60L);
         assertNotNull(redisCheConfiguration);
     }

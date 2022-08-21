@@ -24,9 +24,7 @@ public class CambioController {
             @PathVariable("to") String to
             ) {
 
-        var cambio = cambioService.findByFromAndTo(from, to, amount);
-
-        return cambio;
+        return cambioService.findByFromAndTo(from, to, amount);
     }
 
 }

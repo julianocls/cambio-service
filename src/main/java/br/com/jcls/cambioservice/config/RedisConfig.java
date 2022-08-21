@@ -1,6 +1,5 @@
 package br.com.jcls.cambioservice.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -19,16 +18,13 @@ import java.util.Objects;
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
-    @Autowired
-    private CacheTimeout cacheTimeout;
-
     public RedisCacheConfiguration createCacheConfiguration(long timeoutInMinutes) {
         return org.springframework.data.redis.cache.RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(timeoutInMinutes));
     }
 
     @Bean
-    public CacheManager cacheManager(LettuceConnectionFactory redisConnectionFactory) {
+    public CacheManager cacheManager(LettuceConnectionFactory redisConnectionFactory, CacheTimeout cacheTimeout) {
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
         if (Objects.nonNull(cacheTimeout.getCachesTTL())) {
             for (Map.Entry<String, String> cacheNameAndTimeout : cacheTimeout.getCachesTTL().entrySet()) {

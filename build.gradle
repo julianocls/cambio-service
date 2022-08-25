@@ -1,3 +1,6 @@
+import com.github.davidmc24.gradle.plugin.avro.GenerateAvroProtocolTask
+import com.github.davidmc24.gradle.plugin.avro.GenerateAvroSchemaTask
+
 buildscript {
 
 	ext {
@@ -13,9 +16,11 @@ plugins {
 	id 'idea'
 	id 'eclipse'
 	id 'jacoco'
+	id "com.github.davidmc24.gradle.plugin.avro" version "1.3.0"
 }
 
 apply plugin: 'jacoco'
+apply plugin: "com.github.davidmc24.gradle.plugin.avro-base"
 
 group = 'br.com.jcls'
 version = '0.0.1-SNAPSHOT'
@@ -40,10 +45,16 @@ dependencies {
 	implementation 'org.flywaydb:flyway-mysql'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	implementation "org.apache.avro:avro:1.11.0"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'it.ozimov:embedded-redis:0.7.3'
 
 
+}
+
+avro {
+	fieldVisibility.set("PRIVATE")
 }
 
 dependencyManagement {
@@ -63,3 +74,17 @@ tasks.named('jar') {
 //configurations.all {
 //	exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 //}
+
+def generateProtocol = tasks.register("generateProtocol", GenerateAvroProtocolTask) {
+	source file("src/main/avro")
+	include("**/*.avdl")
+	outputDir = file("build/generated-avro-main-avpr")
+}
+
+tasks.register("generateSchema", GenerateAvroSchemaTask) {
+	dependsOn generateProtocol
+	source file("src/main/avro")
+	source file("build/generated-avro-main-avpr")
+	include("**/*.avpr")
+	outputDir = file("build/generated-main-avro-avsc")
+}

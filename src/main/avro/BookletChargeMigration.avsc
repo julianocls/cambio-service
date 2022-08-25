@@ -1,0 +1,42 @@
+{
+  "name": "BookletChargeMigration",
+  "namespace": "br.com.jcls.avro",
+  "type": "record",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "accountId",
+      "type": "string"
+    },
+    {
+      "name": "paymentHistory",
+      "type": ["null", {
+        "type": "map",
+        "values": {
+          "type" : "record",
+          "namespace": "br.com.jcls.avro",
+          "name" : "PaymentDate",
+          "fields" : [
+            { "name" : "strValue" , "type" : "string" }
+          ]
+        }
+      }]
+    },
+    {
+      "name": "linkId",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": {
+        "name": "Status",
+        "namespace": "br.com.jcls.avro",
+        "type": "enum",
+        "symbols": ["ACTIVE", "INATIVE"]
+     }
+    }
+  ]
+}

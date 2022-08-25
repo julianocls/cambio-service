@@ -2,10 +2,12 @@ package br.com.jcls.cambioservice.infra;
 
 import br.com.jcls.avro.BookletChargeMigration;
 import br.com.jcls.avro.PaymentDate;
+import br.com.jcls.avro.Status;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AvroTest {
@@ -24,10 +26,10 @@ public class AvroTest {
                 .setAccountId("54fg84g2sfd213a")
                 .setId("5sd4af6a5sd4fa")
                 .setLinkId("d56a4f")
-                .sets
+                .setStatus(Status.ACTIVE)
                 .setPaymentHistory(map);
 
-        assertNotNull(booklet);
+        assertNotEquals(null, booklet);
     }
 
     @Test

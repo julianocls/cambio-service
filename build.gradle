@@ -50,7 +50,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'it.ozimov:embedded-redis:0.7.3'
 
-
+	implementation 'org.apache.kafka:kafka-streams'
+	implementation 'org.springframework.kafka:spring-kafka'
 }
 
 avro {

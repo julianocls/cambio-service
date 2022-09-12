@@ -2,6 +2,7 @@ package br.com.jcls.cambioservice.controller;
 
 import br.com.jcls.cambioservice.model.Cambio;
 import br.com.jcls.cambioservice.service.CambioService;
+import br.com.jcls.cambioservice.service.TopicProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,9 @@ public class CambioController {
     @Autowired
     private CambioService cambioService;
 
+    @Autowired
+    private TopicProducer topicProducer;
+
     @GetMapping("/{amount}/{from}/{to}")
     public Cambio getCambio(
             @PathVariable("amount")BigDecimal amount,
@@ -24,7 +28,11 @@ public class CambioController {
             @PathVariable("to") String to
             ) {
 
-        return cambioService.findByFromAndTo(from, to, amount);
+        var cambio = cambioService.findByFromAndTo(from, to, amount);
+
+        topicProducer.send(cambio.toString());
+
+        return cambio;
     }
 
 }

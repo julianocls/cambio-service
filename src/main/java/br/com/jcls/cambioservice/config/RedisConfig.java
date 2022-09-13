@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Configuration
-@EnableCaching
+//@EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
     public RedisCacheConfiguration createCacheConfiguration(long timeoutInMinutes) {

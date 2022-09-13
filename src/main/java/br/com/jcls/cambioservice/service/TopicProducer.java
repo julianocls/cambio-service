@@ -1,5 +1,6 @@
 package br.com.jcls.cambioservice.service;
 
+import br.com.jcls.avro.BookletChargeMigration;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -16,19 +17,19 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class TopicProducer {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<Integer, BookletChargeMigration> kafkaTemplate;
 
-    public void send(String message) {
-        String topicName = "topico.comando.teste";
+    public void send(BookletChargeMigration message) {
+        String topicName = "topico.avro.teste";
 
-        ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topicName, message);
+        ListenableFuture<SendResult<Integer, BookletChargeMigration>> future = kafkaTemplate.send(topicName, message);
 
         log.info("Payload enviado: {}", message);
         kafkaTemplate.send(topicName, message);
 
-        future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+        future.addCallback(new ListenableFutureCallback<SendResult<Integer, BookletChargeMigration>>() {
             @Override
-            public void onSuccess(SendResult<String, String> result) {
+            public void onSuccess(SendResult<Integer, BookletChargeMigration> result) {
                 System.out.println("Sent message=[" + message +
                         "] with offset=[" + result.getRecordMetadata().offset() + "]");
             }

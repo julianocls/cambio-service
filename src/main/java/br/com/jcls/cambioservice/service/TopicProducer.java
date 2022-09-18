@@ -1,35 +1,30 @@
 package br.com.jcls.cambioservice.service;
 
-import br.com.jcls.avro.BookletChargeMigration;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.avro.specific.SpecificRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import java.util.Properties;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TopicProducer {
 
-    private final KafkaTemplate<Integer, BookletChargeMigration> kafkaTemplate;
+    private final KafkaTemplate<Integer, SpecificRecord> kafkaTemplate;
 
-    public void send(BookletChargeMigration message) {
-        String topicName = "topico.avro.teste";
-
-        ListenableFuture<SendResult<Integer, BookletChargeMigration>> future = kafkaTemplate.send(topicName, message);
+    public void send(SpecificRecord message, String topicName) {
+        //ListenableFuture<SendResult<Integer, SpecificRecord>> future = kafkaTemplate.send(topicName, message);
 
         log.info("Payload enviado: {}", message);
         kafkaTemplate.send(topicName, message);
 
-        future.addCallback(new ListenableFutureCallback<SendResult<Integer, BookletChargeMigration>>() {
+        /*future.addCallback(new ListenableFutureCallback<>() {
             @Override
-            public void onSuccess(SendResult<Integer, BookletChargeMigration> result) {
+            public void onSuccess(SendResult<Integer, SpecificRecord> result) {
                 System.out.println("Sent message=[" + message +
                         "] with offset=[" + result.getRecordMetadata().offset() + "]");
             }
@@ -39,7 +34,7 @@ public class TopicProducer {
                 System.out.println("Unable to send message=["
                         + message + "] due to : " + ex.getMessage());
             }
-        });
+        });*/
     }
 
 }

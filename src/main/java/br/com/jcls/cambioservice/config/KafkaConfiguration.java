@@ -7,6 +7,7 @@ import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -49,6 +50,8 @@ public class KafkaConfiguration {
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
         properties.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, maxPollRecords);
         properties.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
+        properties.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, "true");
+
 
         return properties;
     }
@@ -65,12 +68,12 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ProducerFactory<Integer, BookletChargeMigration> producerBookletChargeMigrationFactory() {
+    public ProducerFactory<Integer, SpecificRecord> producerBookletChargeMigrationFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<Integer, BookletChargeMigration> bookletChargeMigrationTemplate() {
+    public KafkaTemplate<Integer, SpecificRecord> bookletChargeMigrationTemplate() {
         return new KafkaTemplate<>(producerBookletChargeMigrationFactory());
     }
 }

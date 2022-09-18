@@ -6,6 +6,7 @@ import br.com.jcls.avro.Status;
 import br.com.jcls.cambioservice.model.Cambio;
 import br.com.jcls.cambioservice.service.CambioService;
 import br.com.jcls.cambioservice.service.TopicProducer;
+import com.irs.register.avro.taxpayer.TaxPayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,7 +48,17 @@ public class CambioController {
                 .setStatus(Status.ACTIVE)
                 .setPaymentHistory(map).build();
 
-        topicProducer.send(booklet);
+        String topicName = "topico.avro.teste";
+        topicProducer.send(booklet, topicName);
+
+        var taxPayer = TaxPayer.newBuilder()
+                .setDocument("999.999.999.99")
+                .setName("Juliano Santos")
+                .setSituation(Boolean.TRUE)
+                .build();
+
+        String topic = "pag.tax.cabio-service";
+        topicProducer.send(taxPayer, topic);
 
         return cambio;
     }
